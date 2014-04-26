@@ -38,21 +38,21 @@ public class Tile
 		return this;
 	}
 	
-	public int getIndex()
+	public int getIndex(byte meta)
 	{
 		return index;
 	}
 	
 	// ==========================================================================
 	public static Tile[] tiles;
-	public static final Tile HOLE_EDGE;
-	public static final Tile HOLE_CENTER;
+	public static final Tile HOLE;
+	public static final Tile STONE_FLOOR;
 	
 	static
 	{
 		tiles = new Tile[64];
-		HOLE_EDGE = new Tile(0, "HoleEdge", 0);
-		HOLE_CENTER = new Tile(1, "HoleCenter", 1);
+		HOLE = new TileHole(0, "Hole", 0);
+		STONE_FLOOR = new TileStoneFloor(1, 2);
 	}
 	
 	public static boolean tileExists(int id)
@@ -66,7 +66,7 @@ public class Tile
 	public static Tile getTile(int id)
 	{
 		if (id < 0 || id >= tiles.length)
-			return Tile.HOLE_EDGE;
+			return Tile.HOLE;
 		
 		return Tile.tiles[id];
 	}

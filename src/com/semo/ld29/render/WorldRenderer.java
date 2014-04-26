@@ -28,6 +28,7 @@ public class WorldRenderer
 		currentTile.setOrigin(new Vector2f(0, 0));
 		currentTile.setTextureRect(getTextureLocation(0));
 		currentTile.setPosition(new Vector2f(0, 0));
+		currentTile.setScale(new Vector2f(2, 2));
 	}
 	
 	public static void renderWorld(World world)
@@ -37,10 +38,10 @@ public class WorldRenderer
 		// TODO: make this more efficient, not rendering EVERYTHING only what needs to be rendered (ie what is on screen)
 		for (int x = 0; x < world.width; ++x)
 		{
-			for (int y = 0; y < world.height; ++y)
+			for (int y = world.height - 1; y >= 0; --y)
 			{
-				currentTile.setTextureRect(getTextureLocation(world.getTile(x, y).getIndex()));
-				currentTile.setPosition(new Vector2f(x * 32, y * 32));
+				currentTile.setTextureRect(getTextureLocation(world.getTile(x, y).getIndex(world.getMetadata(x, y))));
+				currentTile.setPosition(new Vector2f(x * 64, y * 64));
 				target.draw(currentTile);
 			}
 		}
@@ -51,8 +52,8 @@ public class WorldRenderer
 		if (index < 0 || index >= 64)
 			return new IntRect(0, 0, 32, 32);
 		
-		int x = index % 8;
-		int y = index / 8;
+		int x = index % 16;
+		int y = index / 16;
 		
 		return new IntRect(x * 32, y * 32, 32, 32);
 	}

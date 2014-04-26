@@ -5,7 +5,8 @@ import com.semo.ld29.world.tile.Tile;
 
 public class World 
 {
-	private int[][] tiles;
+	private int[][] tileData;
+	private byte[][] metaData;
 	
 	public final int width;
 	public final int height;
@@ -15,16 +16,25 @@ public class World
 		this.width = width;
 		this.height = height;
 		
-		this.tiles = new int[width][height];
+		this.tileData = new int[width][height];
+		this.metaData = new byte[width][height];
 		
 		for (int x = 0; x < width; ++x)
 		{
 			for (int y = 0; y < height; ++y)
 			{
 				if (y == 0)
-					tiles[x][y] = 0;
+					setTile(x, y, 0);
 				else
-					tiles[x][y] = 1;
+					setTile(x, y, 0, (byte)1);
+			}
+		}
+		
+		for (int x = 0; x < 4; ++x)
+		{
+			for (int y = 0; y < 3; ++y)
+			{
+				setTile(x + 3, y + 3, 1, (byte)0);
 			}
 		}
 	}
@@ -44,9 +54,23 @@ public class World
 	public Tile getTile(int x, int y)
 	{
 		if (!inBounds(x, y))
-			return Tile.HOLE_EDGE;
+			return Tile.HOLE;
 		
-		return Tile.getTile(tiles[x][y]);
+		return Tile.getTile(tileData[x][y]);
+	}
+	
+	public void setTile(int x, int y, int t, byte meta)
+	{
+		setTile(x, y, Tile.getTile(t), meta);
+	}
+	
+	public void setTile(int x, int y, Tile t, byte meta)
+	{
+		if (!inBounds(x, y))
+			return;
+		
+		tileData[x][y] = t.id;
+		setMetadata(x, y, meta);
 	}
 	
 	public void setTile(int x, int y, int t)
@@ -59,15 +83,35 @@ public class World
 		if (!inBounds(x, y))
 			return;
 		
-		tiles[x][y] = t.id;
+		tileData[x][y] = t.id;
+		setMetadata(x, y, (byte)0);
 	}
+	
+	// TODO: Make this update neighboors
+	public void setMetadata(int x, int y, byte meta)
+	{
+		if (!inBounds(x, y))
+			return;
+		
+		metaData[x][y] = meta;
+	}
+	
+	public byte getMetadata(int x, int y)
+	{
+		if (!inBounds(x, y))
+			return 0;
+		
+		return metaData[x][y];
+	}
+	
+	// ================================================
 	
 	public boolean isHole(int x, int y)
 	{
 		if (!inBounds(x, y))
 			return true;
 		
-		return getTile(x, y) == Tile.HOLE_EDGE || getTile(x, y) == Tile.HOLE_CENTER;
+		return getTile(x, y) == Tile.HOLE;
 	}
 	
 	public boolean inBounds(int x, int y)
