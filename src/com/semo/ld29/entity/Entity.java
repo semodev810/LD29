@@ -35,7 +35,8 @@ public abstract class Entity
 	
 	public Entity setPosition(Vector2f newPos)
 	{
-		this.position = newPos;
+		if (this.canMoveTo(newPos))
+			this.position = newPos;
 		// TODO: check is a position changed event is necessary
 		return this;
 	}
@@ -48,6 +49,14 @@ public abstract class Entity
 	public Entity move(Vector2f amt)
 	{
 		return setPosition(position.x + amt.x, position.y + amt.y);
+	}
+	
+	public boolean canMoveTo(Vector2f loc)
+	{
+		int tx = (int)loc.x / 64;
+		int ty = (int)loc.y / 44;
+		
+		return world.getTile(tx, ty).canEntityEnterTile(this, tx, ty, world.getMetadata(tx, ty));
 	}
 	
 	public final World getWorld()
@@ -75,6 +84,8 @@ public abstract class Entity
 		
 		sprite.update(elapsed);
 	}
+	
+	// ==================================================
 	
 	public final Entity setTexture(AnimatedSprite sprite)
 	{

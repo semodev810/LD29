@@ -110,10 +110,7 @@ public class AnimatedSprite
 		int frame = activeAnimation.getCurrentFrame();
 		int fx = frame % parameters.framesWidth, fy = frame / parameters.framesWidth;
 		
-		IntRect ret = new IntRect(fx * parameters.frameWidth, fy * parameters.frameHeight, parameters.frameWidth, parameters.frameHeight);
-		System.out.println("Subset: " + ret);
-		
-		return ret;
+		return new IntRect(fx * parameters.frameWidth, fy * parameters.frameHeight, parameters.frameWidth, parameters.frameHeight);
 	}
 	
 	// ========================================================

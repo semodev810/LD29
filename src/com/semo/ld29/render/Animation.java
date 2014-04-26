@@ -123,8 +123,6 @@ public class Animation
 				}
 			}
 		}
-		
-		System.out.println("Updated: " + currentFrame);
 	}
 	
 	// =============================================================

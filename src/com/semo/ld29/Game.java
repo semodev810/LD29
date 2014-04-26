@@ -87,7 +87,6 @@ public class Game
 		Clock fpsClock = new Clock();
 		
 		dConsole.updateInformation("FPS", "FPS: 0");
-		dConsole.updateInformation("s", "Hi there");
 		
 		World world = new World(10, 10);
 		Entity.createEntityInWorld(new EntityPlayer(new Vector2f(50, 50)).setTexture(Resources.PLAYER_SPRITE), world);

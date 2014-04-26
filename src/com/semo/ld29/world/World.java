@@ -9,6 +9,21 @@ import com.semo.ld29.world.tile.Tile;
 
 public class World 
 {
+	private static final int[][] TILEDATA = 
+		{
+		{ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 },
+		{ 1, 1, 2, 1, 1, 2, 1, 2, 1, 2 },
+		{ 1, 1, 2, 1, 1, 2, 1, 2, 1, 2 },
+		{ 1, 1, 2, 1, 1, 2, 1, 2, 1, 2 },
+		{ 1, 1, 2, 2, 1, 2, 1, 2, 1, 2 },
+		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 2 },
+		{ 1, 1, 0, 0, 0, 0, 0, 0, 1, 2 },
+		{ 1, 1, 0, 0, 0, 0, 0, 1, 1, 2 },
+		{ 1, 1, 1, 0, 0, 0, 1, 1, 1, 2 },
+		{ 1, 1, 1, 1, 1, 1, 2, 2, 2, 2 }
+		};
+	
+	
 	private int[][] tileData;
 	private byte[][] metaData;
 	
@@ -27,25 +42,8 @@ public class World
 		
 		for (int x = 0; x < width; ++x)
 			for (int y = 0; y < height; ++y)
-				setTile(x, y, 0);
-		
-		// Keep for testing purposes with new tiles
-		for (int x = 0; x < 4; ++x)
-		{
-			for (int y = 0; y < 3; ++y)
-			{
-				setTile(x + 3, y + 3, 1, (byte)0);
-			}
-		}
-		
-		setTile(7, 3, 2);
-		
-		for (int x = 0; x < 4; ++x)
-			setTile(x + 4, 2, 2);
-		
-		setTile(7, 4, 2);
-		setTile(7, 5, 2);
-		
+				setTile(x, y, TILEDATA[y][x]);
+
 		entityList = new ArrayList<Entity>();
 	}
 	
