@@ -7,11 +7,12 @@ public class TileStoneFloor extends Tile
 	 * Metadata guide:
 	 * 0 - Empty stone
 	 * 1 - Poorly drawn rocks
+	 * 2 - crack
 	 */
 	
-	public TileStoneFloor(int id, int index)
+	public TileStoneFloor(int id, String name, int index)
 	{
-		super(id, "StoneFloor", index);
+		super(id, name, index);
 	}
 	
 	@Override

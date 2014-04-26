@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 
 import org.jsfml.graphics.IntRect;
-import org.jsfml.graphics.RenderWindow;
+import org.jsfml.graphics.RenderTarget;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
@@ -15,11 +15,11 @@ public class WorldRenderer
 {
 	public static Texture tileMap;
 	public static Sprite currentTile;
-	public static RenderWindow target;
+	private static RenderTarget target; // RenderTarget allows the target to be a window or a render to texture
 	
-	public static void init(RenderWindow window) throws IOException
+	public static void init(RenderTarget target) throws IOException
 	{
-		target = window;
+		WorldRenderer.target = target;
 		
 		tileMap = new Texture();
 		tileMap.loadFromFile(Paths.get("resources\\tileMap.png"));
@@ -36,13 +36,16 @@ public class WorldRenderer
 		currentTile.setTextureRect(getTextureLocation(0));
 		
 		// TODO: make this more efficient, not rendering EVERYTHING only what needs to be rendered (ie what is on screen)
-		for (int x = 0; x < world.width; ++x)
+		for (int y = 0; y < world.width; ++y)
 		{
-			for (int y = world.height - 1; y >= 0; --y)
+			for (int x = 0; x < world.height; ++x)
 			{
-				currentTile.setTextureRect(getTextureLocation(world.getTile(x, y).getIndex(world.getMetadata(x, y))));
-				currentTile.setPosition(new Vector2f(x * 64, y * 64));
-				target.draw(currentTile);
+				if (!world.isHole(x, y)) 
+				{
+					currentTile.setTextureRect(getTextureLocation(world.getTile(x, y).getIndex(world.getMetadata(x, y))));
+					currentTile.setPosition(new Vector2f(x * 64, y * 44)); // This is because the front texture is 10 px tall and x2 scale
+					target.draw(currentTile);
+				}
 			}
 		}
 	}

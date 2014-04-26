@@ -3,12 +3,16 @@ package com.semo.ld29;
 import java.io.IOException;
 
 import org.jsfml.graphics.Color;
+import org.jsfml.graphics.FloatRect;
 import org.jsfml.graphics.RenderWindow;
+import org.jsfml.graphics.View;
 import org.jsfml.system.Clock;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
+import org.jsfml.window.event.SizeEvent;
 
 import com.semo.ld29.input.InputState;
+import com.semo.ld29.render.EntityRenderer;
 import com.semo.ld29.render.WorldRenderer;
 import com.semo.ld29.world.World;
 
@@ -33,6 +37,8 @@ public class Game
 			System.out.println("Could not load tileMap for world.");
 			this.exit(EXIT_ERROR);
 		}
+		
+		EntityRenderer.init(window);
 	}
 	
 	public void run()
@@ -43,7 +49,7 @@ public class Game
 		
 		while (window.isOpen())
 		{
-			window.clear(Color.WHITE);
+			window.clear(Color.BLACK);
 			
 			float deltaTime = (clock.restart()).asSeconds();
 			InputState.swapStates();
@@ -54,6 +60,13 @@ public class Game
 				
 				if (event.type == Event.Type.CLOSED)
 					window.close();
+				
+				if (event.type == Event.Type.RESIZED)
+				{
+					SizeEvent se = event.asSizeEvent();
+					window.setView(new View(new FloatRect(0, 0, se.size.x, se.size.y)));
+					// TODO: move the world renderer when the window resizes
+				}
 			}
 			
 			world.update(deltaTime);

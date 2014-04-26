@@ -1,5 +1,9 @@
 package com.semo.ld29.world;
 
+import java.util.ArrayList;
+
+import com.semo.ld29.entity.Entity;
+import com.semo.ld29.render.EntityRenderer;
 import com.semo.ld29.render.WorldRenderer;
 import com.semo.ld29.world.tile.Tile;
 
@@ -11,6 +15,8 @@ public class World
 	public final int width;
 	public final int height;
 	
+	private ArrayList<Entity> entityList;
+	
 	public World(int width, int height)
 	{
 		this.width = width;
@@ -20,16 +26,10 @@ public class World
 		this.metaData = new byte[width][height];
 		
 		for (int x = 0; x < width; ++x)
-		{
 			for (int y = 0; y < height; ++y)
-			{
-				if (y == 0)
-					setTile(x, y, 0);
-				else
-					setTile(x, y, 0, (byte)1);
-			}
-		}
+				setTile(x, y, 0);
 		
+		// Keep for testing purposes with new tiles
 		for (int x = 0; x < 4; ++x)
 		{
 			for (int y = 0; y < 3; ++y)
@@ -37,16 +37,45 @@ public class World
 				setTile(x + 3, y + 3, 1, (byte)0);
 			}
 		}
+		
+		entityList = new ArrayList<Entity>();
 	}
 	
 	public void update(float elapsed)
 	{
-		
+		for (Entity ent : entityList)
+			ent.update(elapsed);
 	}
 	
 	public void render(float elapsed)
 	{
 		WorldRenderer.renderWorld(this);
+		
+		for (Entity ent : entityList)
+			EntityRenderer.renderEntity(ent);
+	}
+	
+	// ==============================================
+	
+	public void addEntity(Entity entity)
+	{
+		if (!entityList.contains(entity))
+		{
+			entityList.add(entity);
+			entity.onSpawn();
+			// TODO: fire event for the entity spawn?
+		}
+	}
+	
+	public ArrayList<Entity> getEntities()
+	{
+		return entityList;
+	}
+	
+	public void removeEntity(Entity entity)
+	{
+		if (entityList.contains(entity))
+			entityList.remove(entityList.indexOf(entity));
 	}
 	
 	// ==============================================
