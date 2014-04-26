@@ -15,27 +15,32 @@ public class EntityPlayer extends Entity
 	@Override
 	public void update(float elapsed)
 	{
-		super.update(elapsed);
+		float mx = 0, my = 0;
 		
 		if (InputState.keyDown(Key.RIGHT))
 		{
-			move(128 * elapsed, 0);
+			mx += 128 * elapsed;
 			sprite.activateAnimation("Jump");
 		}
 		if (InputState.keyDown(Key.LEFT))
 		{
-			move(-128 * elapsed, 0);
+			mx += -128 * elapsed;
 			sprite.activateAnimation("Jump");
 		}
 		if (InputState.keyDown(Key.UP))
 		{
-			move(0, -88 * elapsed);
+			my += -88 * elapsed;
 			sprite.activateAnimation("Jump");
 		}
 		if (InputState.keyDown(Key.DOWN))
 		{
-			move(0, 88 * elapsed);
+			my += 88 * elapsed;
 			sprite.activateAnimation("Jump");
 		}
+		
+		move(mx, 0);
+		move(0, my);
+		
+		super.update(elapsed);
 	}
 }

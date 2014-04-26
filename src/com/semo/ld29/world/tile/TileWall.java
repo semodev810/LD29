@@ -21,13 +21,13 @@ public class TileWall extends Tile
 	@Override
 	public Vector2i getTextureSize(byte meta)
 	{
-		return new Vector2i(32, 74);
+		return new Vector2i(32, 64);
 	}
 	
 	@Override
 	public Vector2f getOffset(byte meta)
 	{
-		return new Vector2f(0, -84);
+		return new Vector2f(0, -64);
 	}
 	
 	@Override

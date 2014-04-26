@@ -94,7 +94,7 @@ public class Tile
 	static
 	{
 		tiles = new Tile[64];
-		HOLE = new Tile(0, "Hole", 0);
+		HOLE = new TileHole(0, "Hole", 0);
 		STONE_FLOOR = new TileStoneFloor(1, "StoneFloor", 1);
 		STONE_WALL = new TileWall(2, "StoneWall", 4);
 	}
