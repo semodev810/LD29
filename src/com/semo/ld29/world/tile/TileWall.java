@@ -29,10 +29,4 @@ public class TileWall extends Tile
 	{
 		return new Vector2f(0, -64);
 	}
-	
-	@Override
-	public int getRenderPass()
-	{
-		return 0;
-	}
 }

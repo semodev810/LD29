@@ -7,9 +7,11 @@ import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.RenderTarget;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
+import org.jsfml.graphics.View;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 
+import com.semo.ld29.Game;
 import com.semo.ld29.world.World;
 import com.semo.ld29.world.tile.Tile;
 
@@ -37,6 +39,11 @@ public class WorldRenderer
 	{
 		currentTile.setTextureRect(new IntRect(0, 0, 32, 32));
 		
+		View oldView = (View) target.getView();
+		View newView = new View(Game.getInstance().getPlayer().getPosition(), oldView.getSize());
+		
+		target.setView(newView);
+		
 		// TODO: make this more efficient, not rendering EVERYTHING only what needs to be rendered (ie what is on screen)
 		for (int y = 0; y < world.width; ++y)
 		{
@@ -50,6 +57,8 @@ public class WorldRenderer
 				}
 			}
 		}
+		
+		target.setView(oldView);
 	}
 	
 	public static IntRect getTextureLocation(Tile t, byte meta)

@@ -17,9 +17,9 @@ public class World
 		{ 1, 1, 2, 1, 1, 2, 1, 2, 1, 2 },
 		{ 1, 1, 2, 2, 1, 2, 1, 2, 1, 2 },
 		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 2 },
-		{ 1, 1, 0, 0, 0, 0, 0, 0, 1, 2 },
-		{ 1, 1, 0, 0, 0, 0, 0, 1, 1, 2 },
-		{ 1, 1, 1, 0, 0, 0, 1, 1, 1, 2 },
+		{ 1, 1, 0, 0, 1, 1, 1, 1, 1, 2 },
+		{ 1, 1, 0, 0, 1, 1, 1, 1, 1, 2 },
+		{ 1, 1, 1, 0, 1, 1, 1, 1, 1, 2 },
 		{ 1, 1, 1, 1, 1, 1, 2, 2, 2, 2 }
 		};
 	
@@ -56,10 +56,8 @@ public class World
 	public void render(float elapsed)
 	{
 		WorldRenderer.renderWorld(this, 0);
-		WorldRenderer.renderWorld(this, 1);
 		
-		for (Entity ent : entityList)
-			EntityRenderer.renderEntity(ent);
+		EntityRenderer.renderAllEntities(entityList);
 	}
 	
 	// ==============================================

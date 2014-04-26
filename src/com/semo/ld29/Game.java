@@ -17,7 +17,6 @@ import org.jsfml.window.event.SizeEvent;
 import com.semo.ld29.entity.Entity;
 import com.semo.ld29.entity.EntityPlayer;
 import com.semo.ld29.input.InputState;
-import com.semo.ld29.render.AnimatedSprite;
 import com.semo.ld29.render.EntityRenderer;
 import com.semo.ld29.render.WorldRenderer;
 import com.semo.ld29.world.World;
@@ -28,6 +27,9 @@ public class Game
 	
 	private RenderWindow window;
 	private DebugConsole dConsole;
+	
+	private World activeWorld;
+	private EntityPlayer thePlayer;
 	
 	public Game()
 	{
@@ -88,8 +90,9 @@ public class Game
 		
 		dConsole.updateInformation("FPS", "FPS: 0");
 		
-		World world = new World(10, 10);
-		Entity.createEntityInWorld(new EntityPlayer(new Vector2f(50, 50)).setTexture(Resources.PLAYER_SPRITE, true), world);
+		activeWorld = new World(10, 10);
+		thePlayer = (EntityPlayer) new EntityPlayer(new Vector2f(50, 50)).setTexture(Resources.PLAYER_SPRITE, true);
+		Entity.createEntityInWorld(thePlayer, activeWorld);
 		
 		int frames = 0;
 		while (window.isOpen())
@@ -121,8 +124,8 @@ public class Game
 				frames = 0;
 			}
 			
-			world.update(deltaTime);
-			world.render(deltaTime);
+			activeWorld.update(deltaTime);
+			activeWorld.render(deltaTime);
 			
 			dConsole.render();
 			
@@ -139,6 +142,16 @@ public class Game
 	public DebugConsole getDebugConsole()
 	{
 		return dConsole;
+	}
+	
+	public World getWorld()
+	{
+		return activeWorld;
+	}
+	
+	public EntityPlayer getPlayer()
+	{
+		return thePlayer;
 	}
 	
 	public static final int EXIT_OK = 0;

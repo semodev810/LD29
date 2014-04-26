@@ -115,11 +115,9 @@ public abstract class Entity
 		
 		Tile curr = world.getTile(tilePos.x, tilePos.y);
 		Game.getInstance().getDebugConsole().updateInformation("PlayerPosition", "Player Position: (" + tilePos.x + ", " + tilePos.y + ").");
-		System.out.println("Last: " + lastTilePos + "    Now: " + tilePos);
 		if (lastTilePos.x != tilePos.x || lastTilePos.y != tilePos.y)
 		{
 			Tile last = world.getTile(lastTilePos.x, lastTilePos.y);
-			System.out.println("Oi m80 i just updated");
 			last.onEntityExit(this, lastTilePos.x, lastTilePos.y, world.getMetadata(lastTilePos.x, lastTilePos.y));
 			curr.onEntityEnter(this, tilePos.x, tilePos.y, world.getMetadata(tilePos.x, tilePos.y));
 		}
