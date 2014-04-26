@@ -4,10 +4,13 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
+import org.jsfml.graphics.Color;
 import org.jsfml.graphics.IntRect;
 import org.jsfml.graphics.RenderTarget;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
+import org.jsfml.system.Vector2f;
+import org.jsfml.system.Vector2i;
 
 import com.semo.ld29.Game;
 
@@ -33,10 +36,17 @@ public class AnimatedSprite
 			int fw = framesWidth * frameWidth, fh = framesHeight * frameHeight;
 			return (fw == texture.getSize().x && fh == texture.getSize().y);
 		}
+		
+		@Override
+		public Object clone()
+		{
+			return new AnimationParameters(framesWidth, framesHeight, frameWidth, frameHeight);
+		}
 	}
 	
 	private Texture texture;
 	private Sprite frame;
+	private String textureName;
 	
 	public final AnimationParameters parameters;
 	
@@ -46,6 +56,7 @@ public class AnimatedSprite
 	public AnimatedSprite(String name, int fx, int fy, int fwidth, int fheight)
 	{
 		this.texture = new Texture();
+		this.textureName = name;
 		try 
 		{
 			texture.loadFromFile(Paths.get("resources\\" + name));
@@ -76,6 +87,7 @@ public class AnimatedSprite
 		this.frame = new Sprite(texture);
 		this.animations = new HashMap<String, Animation>();
 		addAnimation(new Animation(0, 0, 0, "None"));
+		activateAnimation("None");
 	}
 	
 	public void render(RenderTarget target)
@@ -162,5 +174,48 @@ public class AnimatedSprite
 	public void reset()
 	{
 		activeAnimation.reset();
+	}
+	
+	// ==================================================================
+	
+	public void setScale(Vector2f scale)
+	{
+		frame.setScale(scale);
+	}
+	
+	public void setColor(Color color)
+	{
+		frame.setColor(color);
+	}
+	
+	// Scales the sprite to a specific size
+	public void scaleTo(Vector2i scale)
+	{
+		float sx = (float)scale.x / (float)parameters.frameWidth;
+		float sy = (float)scale.y / (float)parameters.frameHeight;
+		
+		setScale(new Vector2f(sx, sy));
+	}
+	
+	// =====================
+	
+	public AnimatedSprite copy()
+	{
+		return (AnimatedSprite) this.clone();
+	}
+	
+	@Override
+	public Object clone()
+	{
+		AnimationParameters params = (AnimationParameters) this.parameters.clone();
+		AnimatedSprite ret = new AnimatedSprite(this.textureName, params.framesWidth, params.framesHeight, params.frameWidth, params.frameHeight);
+		for (Animation anim : this.animations.values())
+			ret.addAnimation((Animation) anim.clone());
+		
+		ret.activateAnimation(this.activeAnimation.name);
+		ret.setScale(this.frame.getScale());
+		ret.setColor(this.frame.getColor());
+		
+		return ret;
 	}
 }

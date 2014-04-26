@@ -174,11 +174,13 @@ public class Animation
 		return type;
 	}
 	
-	public void setType(AnimationType type, boolean restart)
+	public Animation setType(AnimationType type, boolean restart)
 	{
 		this.type = type;
 		if (restart)
 			restart();
+		
+		return this;
 	}
 	
 	public int getCurrentFrame()
@@ -191,8 +193,20 @@ public class Animation
 		return speed;
 	}
 	
-	public void setSpeed(float speed)
+	public Animation setSpeed(float speed)
 	{
 		this.speed = speed;
+		return this;
+	}
+	
+	// ===================================
+	
+	@Override
+	public Object clone()
+	{
+		Animation anim = new Animation(startFrame, endFrame, speed, name, type);
+		anim.currentFrame = this.currentFrame;
+		anim.forward = this.forward;
+		return anim;
 	}
 }

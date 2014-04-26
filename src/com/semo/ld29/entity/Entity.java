@@ -3,6 +3,7 @@ package com.semo.ld29.entity;
 import org.jsfml.system.Vector2f;
 import org.jsfml.system.Vector2i;
 
+import com.semo.ld29.render.AnimatedSprite;
 import com.semo.ld29.world.World;
 import com.semo.ld29.world.tile.Tile;
 
@@ -13,6 +14,8 @@ public abstract class Entity
 	protected World world;
 	
 	private Vector2i tilePos;
+	
+	private AnimatedSprite sprite;
 	
 	public Entity(Vector2f position)
 	{
@@ -68,6 +71,16 @@ public abstract class Entity
 			world.getTile(tx, ty).onEntityEnter(this, tilePos.x, tilePos.y, world.getMetadata(tilePos.x, tilePos.y));
 			tilePos = new Vector2i(tx, ty);
 		}
+	}
+	
+	public final void setTexture(AnimatedSprite sprite)
+	{
+		this.sprite = sprite;
+	}
+	
+	public final AnimatedSprite getTexture()
+	{
+		return sprite;
 	}
 	
 	// =================================================
