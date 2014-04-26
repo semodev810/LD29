@@ -1,10 +1,12 @@
 package com.semo.ld29;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.FloatRect;
 import org.jsfml.graphics.RenderWindow;
+import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.View;
 import org.jsfml.system.Clock;
 import org.jsfml.window.VideoMode;
@@ -18,6 +20,8 @@ import com.semo.ld29.world.World;
 
 public class Game 
 {
+	public static Texture missingTexture;
+	
 	private RenderWindow window;
 	private DebugConsole dConsole;
 	
@@ -48,6 +52,17 @@ public class Game
 		catch (IOException e) 
 		{
 			System.err.println("Could not load text file for the debug console.");
+		}
+		
+		try
+		{
+			missingTexture = new Texture();
+			missingTexture.loadFromFile(Paths.get("resources\\missing.png"));
+		}
+		catch(IOException e)
+		{
+			System.out.println("Could not load the missing texture.");
+			this.exit(EXIT_ERROR);
 		}
 	}
 	

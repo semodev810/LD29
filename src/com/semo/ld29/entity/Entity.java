@@ -25,10 +25,25 @@ public abstract class Entity
 		return new Vector2f(position.x, position.y);
 	}
 	
+	public void setPosition(float x, float y)
+	{
+		setPosition(new Vector2f(x, y));
+	}
+	
 	public void setPosition(Vector2f newPos)
 	{
 		this.position = newPos;
 		// TODO: check is a position changed event is necessary
+	}
+	
+	public void move(float x, float y)
+	{
+		move(new Vector2f(x, y));
+	}
+	
+	public void move(Vector2f amt)
+	{
+		setPosition(position.x + amt.x, position.y + amt.y);
 	}
 	
 	public final World getWorld()
