@@ -19,6 +19,7 @@ import com.semo.ld29.world.World;
 public class Game 
 {
 	private RenderWindow window;
+	private DebugConsole dConsole;
 	
 	public Game()
 	{
@@ -39,14 +40,28 @@ public class Game
 		}
 		
 		EntityRenderer.init(window);
+		
+		try 
+		{
+			dConsole = new DebugConsole(window);
+		} 
+		catch (IOException e) 
+		{
+			System.err.println("Could not load text file for the debug console.");
+		}
 	}
 	
 	public void run()
 	{
 		Clock clock = new Clock();
+		Clock fpsClock = new Clock();
+		
+		dConsole.updateInformation("FPS", "FPS: 0");
+		dConsole.updateInformation("s", "Hi there");
 		
 		World world = new World(10, 10);
 		
+		int frames = 0;
 		while (window.isOpen())
 		{
 			window.clear(Color.BLACK);
@@ -69,16 +84,31 @@ public class Game
 				}
 			}
 			
+			if (fpsClock.getElapsedTime().asSeconds() > 0.5f)
+			{
+				float totalTime = fpsClock.restart().asSeconds();
+				dConsole.updateInformation("FPS", "FPS: " + (frames / totalTime));
+				frames = 0;
+			}
+			
 			world.update(deltaTime);
 			world.render(deltaTime);
 			
+			dConsole.render();
+			
 			window.display();
+			++frames;
 		}
 	}
 	
 	public RenderWindow getWindow()
 	{
 		return window;
+	}
+	
+	public DebugConsole getDebugConsole()
+	{
+		return dConsole;
 	}
 	
 	public static final int EXIT_OK = 0;
