@@ -63,7 +63,7 @@ public class AnimatedSprite
 		} 
 		catch (IOException e) 
 		{
-			System.out.println("Could not load entity texture \"" + name + "\". Using missing texture.");
+			System.out.println("Could not load texture \"" + name + "\". Using missing texture.");
 			texture = Game.missingTexture;
 		}
 		
@@ -90,6 +90,12 @@ public class AnimatedSprite
 		activateAnimation("None");
 	}
 	
+	public void update(float elapsed)
+	{
+		System.out.println(activeAnimation.name);
+		activeAnimation.update(elapsed);
+	}
+	
 	public void render(RenderTarget target, Vector2f position)
 	{
 		frame.setTextureRect(getSubset());
@@ -102,9 +108,12 @@ public class AnimatedSprite
 	public IntRect getSubset()
 	{
 		int frame = activeAnimation.getCurrentFrame();
-		int fx = frame % parameters.framesWidth, fy = frame / parameters.framesHeight;
+		int fx = frame % parameters.framesWidth, fy = frame / parameters.framesWidth;
 		
-		return new IntRect(fx * parameters.frameWidth, fy * parameters.frameHeight, parameters.frameWidth, parameters.frameHeight);
+		IntRect ret = new IntRect(fx * parameters.frameWidth, fy * parameters.frameHeight, parameters.frameWidth, parameters.frameHeight);
+		System.out.println("Subset: " + ret);
+		
+		return ret;
 	}
 	
 	// ========================================================
@@ -150,6 +159,7 @@ public class AnimatedSprite
 		}
 		
 		activeAnimation = animations.get(name);
+			
 		return true;
 	}
 	
@@ -201,6 +211,11 @@ public class AnimatedSprite
 		setScale(new Vector2f(sx, sy));
 	}
 	
+	public void setOrigin(Vector2f origin)
+	{
+		frame.setOrigin(origin);
+	}
+	
 	// =====================
 	
 	public AnimatedSprite copy()
@@ -214,9 +229,13 @@ public class AnimatedSprite
 		AnimationParameters params = (AnimationParameters) this.parameters.clone();
 		AnimatedSprite ret = new AnimatedSprite(this.textureName, params.framesWidth, params.framesHeight, params.frameWidth, params.frameHeight);
 		for (Animation anim : this.animations.values())
-			ret.addAnimation((Animation) anim.clone());
+			if (!"None".equals(anim.name))
+				ret.addAnimation((Animation) anim.clone());
 		
-		ret.activateAnimation(this.activeAnimation.name);
+		if (this.activeAnimation != null)
+			ret.activateAnimation(this.activeAnimation.name);
+		else
+			ret.activateAnimation("None");
 		ret.setScale(this.frame.getScale());
 		ret.setColor(this.frame.getColor());
 		

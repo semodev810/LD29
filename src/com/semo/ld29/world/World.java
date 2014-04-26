@@ -38,6 +38,14 @@ public class World
 			}
 		}
 		
+		setTile(7, 3, 2);
+		
+		for (int x = 0; x < 4; ++x)
+			setTile(x + 4, 2, 2);
+		
+		setTile(7, 4, 2);
+		setTile(7, 5, 2);
+		
 		entityList = new ArrayList<Entity>();
 	}
 	
@@ -49,7 +57,8 @@ public class World
 	
 	public void render(float elapsed)
 	{
-		WorldRenderer.renderWorld(this);
+		WorldRenderer.renderWorld(this, 0);
+		WorldRenderer.renderWorld(this, 1);
 		
 		for (Entity ent : entityList)
 			EntityRenderer.renderEntity(ent);

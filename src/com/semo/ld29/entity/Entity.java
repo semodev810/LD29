@@ -15,7 +15,7 @@ public abstract class Entity
 	
 	private Vector2i tilePos;
 	
-	private AnimatedSprite sprite;
+	protected AnimatedSprite sprite;
 	
 	public Entity(Vector2f position)
 	{
@@ -72,11 +72,14 @@ public abstract class Entity
 			world.getTile(tx, ty).onEntityEnter(this, tilePos.x, tilePos.y, world.getMetadata(tilePos.x, tilePos.y));
 			tilePos = new Vector2i(tx, ty);
 		}
+		
+		sprite.update(elapsed);
 	}
 	
 	public final Entity setTexture(AnimatedSprite sprite)
 	{
 		this.sprite = sprite;
+		this.sprite.setOrigin(new Vector2f(sprite.parameters.frameWidth / 2.0f, sprite.parameters.frameHeight));
 		return this;
 	}
 	

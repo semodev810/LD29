@@ -50,7 +50,8 @@ public class Animation
 		}
 		
 		this.lastUpdate = 0;
-		this.playing = false;
+		this.playing = true;
+		this.type = type;
 	}
 	
 	public void update(float elapsed)
@@ -91,7 +92,7 @@ public class Animation
 		{
 			String typename = type.toString().toLowerCase();
 
-			if (!typename.contains("back_")) // If this is a reverse animation
+			if (typename.contains("back_")) // If this is a reverse animation
 			{
 				if (type == AnimationType.BACK_SINGLE) 
 				{
@@ -122,6 +123,8 @@ public class Animation
 				}
 			}
 		}
+		
+		System.out.println("Updated: " + currentFrame);
 	}
 	
 	// =============================================================

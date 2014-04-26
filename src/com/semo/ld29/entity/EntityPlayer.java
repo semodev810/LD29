@@ -20,18 +20,22 @@ public class EntityPlayer extends Entity
 		if (InputState.keyDown(Key.RIGHT))
 		{
 			move(128 * elapsed, 0);
+			sprite.activateAnimation("Jump");
 		}
 		if (InputState.keyDown(Key.LEFT))
 		{
 			move(-128 * elapsed, 0);
+			sprite.activateAnimation("Jump");
 		}
 		if (InputState.keyDown(Key.UP))
 		{
-			move(0, -128 * elapsed);
+			move(0, -88 * elapsed);
+			sprite.activateAnimation("Jump");
 		}
 		if (InputState.keyDown(Key.DOWN))
 		{
-			move(0, 128 * elapsed);
+			move(0, 88 * elapsed);
+			sprite.activateAnimation("Jump");
 		}
 	}
 }

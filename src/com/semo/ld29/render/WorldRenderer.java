@@ -8,8 +8,10 @@ import org.jsfml.graphics.RenderTarget;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
 import org.jsfml.system.Vector2f;
+import org.jsfml.system.Vector2i;
 
 import com.semo.ld29.world.World;
+import com.semo.ld29.world.tile.Tile;
 
 public class WorldRenderer 
 {
@@ -26,38 +28,41 @@ public class WorldRenderer
 		
 		currentTile = new Sprite(tileMap);
 		currentTile.setOrigin(new Vector2f(0, 0));
-		currentTile.setTextureRect(getTextureLocation(0));
+		currentTile.setTextureRect(new IntRect(0, 0, 32, 32));
 		currentTile.setPosition(new Vector2f(0, 0));
 		currentTile.setScale(new Vector2f(2, 2));
 	}
 	
-	public static void renderWorld(World world)
+	public static void renderWorld(World world, int pass)
 	{
-		currentTile.setTextureRect(getTextureLocation(0));
+		currentTile.setTextureRect(new IntRect(0, 0, 32, 32));
 		
 		// TODO: make this more efficient, not rendering EVERYTHING only what needs to be rendered (ie what is on screen)
 		for (int y = 0; y < world.width; ++y)
 		{
 			for (int x = 0; x < world.height; ++x)
 			{
-				if (!world.isHole(x, y)) 
+				if (!world.isHole(x, y) && world.getTile(x, y).getRenderPass() == pass) 
 				{
-					currentTile.setTextureRect(getTextureLocation(world.getTile(x, y).getIndex(world.getMetadata(x, y))));
-					currentTile.setPosition(new Vector2f(x * 64, y * 44)); // This is because the front texture is 10 px tall and x2 scale
+					currentTile.setTextureRect(getTextureLocation(world.getTile(x, y), world.getMetadata(x, y)));
+					currentTile.setPosition(Vector2f.add(new Vector2f(x * 64, y * 44), world.getTile(x, y).getOffset(world.getMetadata(x, y)))); // This is because the front texture is 10 px tall and x2 scale
 					target.draw(currentTile);
 				}
 			}
 		}
 	}
 	
-	public static IntRect getTextureLocation(int index)
+	public static IntRect getTextureLocation(Tile t, byte meta)
 	{
+		int index = t.getIndex(meta);
+		Vector2i sz = t.getTextureSize(meta);
+		
 		if (index < 0 || index >= 64)
 			return new IntRect(0, 0, 32, 32);
 		
 		int x = index % 16;
 		int y = index / 16;
 		
-		return new IntRect(x * 32, y * 32, 32, 32);
+		return new IntRect(x * 32, y * 32, sz.x, sz.y);
 	}
 }

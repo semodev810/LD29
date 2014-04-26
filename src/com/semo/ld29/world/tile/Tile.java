@@ -1,5 +1,8 @@
 package com.semo.ld29.world.tile;
 
+import org.jsfml.system.Vector2f;
+import org.jsfml.system.Vector2i;
+
 import com.semo.ld29.Game;
 import com.semo.ld29.entity.Entity;
 
@@ -60,16 +63,40 @@ public class Tile
 		return index;
 	}
 	
+	public Vector2i getTextureSize(byte meta)
+	{
+		return new Vector2i(32, 32);
+	}
+	
+	public Vector2f getOffset(byte meta)
+	{
+		return new Vector2f(0, 0);
+	}
+	
+	/**
+	 * 0 - ground tiles and whatnot
+	 * 1 - walls and upper tiles
+	 * 2 - anything transparent
+	 * 
+	 * @return The render pass
+	 */
+	public int getRenderPass()
+	{
+		return 0;
+	}
+	
 	// ==========================================================================
 	public static Tile[] tiles;
 	public static final Tile HOLE;
 	public static final Tile STONE_FLOOR;
+	public static final Tile STONE_WALL;
 	
 	static
 	{
 		tiles = new Tile[64];
 		HOLE = new Tile(0, "Hole", 0);
 		STONE_FLOOR = new TileStoneFloor(1, "StoneFloor", 1);
+		STONE_WALL = new TileWall(2, "StoneWall", 4);
 	}
 	
 	public static boolean tileExists(int id)

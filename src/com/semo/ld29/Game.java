@@ -35,7 +35,18 @@ public class Game
 		
 		window = new RenderWindow();
 		window.create(new VideoMode(800, 600), "Insert Whitty Title Here Eventually");
-		window.setFramerateLimit(60);
+		//window.setFramerateLimit(60);
+		
+		try 
+		{
+			Resources.init();
+		} 
+		catch (IOException e1) 
+		{
+			System.out.println("Failed while trying to load resources.");
+			e1.printStackTrace();
+			this.exit(EXIT_ERROR);
+		}
 		
 		try
 		{
@@ -79,7 +90,7 @@ public class Game
 		dConsole.updateInformation("s", "Hi there");
 		
 		World world = new World(10, 10);
-		Entity.createEntityInWorld(new EntityPlayer(new Vector2f(50, 50)).setTexture(new AnimatedSprite("resources\\missing.png", 1, 1, 32, 32)), world);
+		Entity.createEntityInWorld(new EntityPlayer(new Vector2f(50, 50)).setTexture(Resources.PLAYER_SPRITE), world);
 		
 		int frames = 0;
 		while (window.isOpen())
