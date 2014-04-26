@@ -90,9 +90,13 @@ public class AnimatedSprite
 		activateAnimation("None");
 	}
 	
-	public void render(RenderTarget target)
+	public void render(RenderTarget target, Vector2f position)
 	{
 		frame.setTextureRect(getSubset());
+		Vector2f oldPos = frame.getPosition();
+		frame.setPosition(position);
+		target.draw(frame);
+		frame.setPosition(oldPos);
 	}
 	
 	public IntRect getSubset()

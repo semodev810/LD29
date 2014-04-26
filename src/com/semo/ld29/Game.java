@@ -9,11 +9,15 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Texture;
 import org.jsfml.graphics.View;
 import org.jsfml.system.Clock;
+import org.jsfml.system.Vector2f;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
 import org.jsfml.window.event.SizeEvent;
 
+import com.semo.ld29.entity.Entity;
+import com.semo.ld29.entity.EntityPlayer;
 import com.semo.ld29.input.InputState;
+import com.semo.ld29.render.AnimatedSprite;
 import com.semo.ld29.render.EntityRenderer;
 import com.semo.ld29.render.WorldRenderer;
 import com.semo.ld29.world.World;
@@ -75,6 +79,7 @@ public class Game
 		dConsole.updateInformation("s", "Hi there");
 		
 		World world = new World(10, 10);
+		Entity.createEntityInWorld(new EntityPlayer(new Vector2f(50, 50)).setTexture(new AnimatedSprite("resources\\missing.png", 1, 1, 32, 32)), world);
 		
 		int frames = 0;
 		while (window.isOpen())

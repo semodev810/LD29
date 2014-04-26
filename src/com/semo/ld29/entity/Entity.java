@@ -28,25 +28,26 @@ public abstract class Entity
 		return new Vector2f(position.x, position.y);
 	}
 	
-	public void setPosition(float x, float y)
+	public Entity setPosition(float x, float y)
 	{
-		setPosition(new Vector2f(x, y));
+		return setPosition(new Vector2f(x, y));
 	}
 	
-	public void setPosition(Vector2f newPos)
+	public Entity setPosition(Vector2f newPos)
 	{
 		this.position = newPos;
 		// TODO: check is a position changed event is necessary
+		return this;
 	}
 	
-	public void move(float x, float y)
+	public Entity move(float x, float y)
 	{
-		move(new Vector2f(x, y));
+		return move(new Vector2f(x, y));
 	}
 	
-	public void move(Vector2f amt)
+	public Entity move(Vector2f amt)
 	{
-		setPosition(position.x + amt.x, position.y + amt.y);
+		return setPosition(position.x + amt.x, position.y + amt.y);
 	}
 	
 	public final World getWorld()
@@ -73,9 +74,10 @@ public abstract class Entity
 		}
 	}
 	
-	public final void setTexture(AnimatedSprite sprite)
+	public final Entity setTexture(AnimatedSprite sprite)
 	{
 		this.sprite = sprite;
+		return this;
 	}
 	
 	public final AnimatedSprite getTexture()

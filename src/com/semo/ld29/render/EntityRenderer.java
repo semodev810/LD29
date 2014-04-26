@@ -15,6 +15,6 @@ public class EntityRenderer
 	
 	public static void renderEntity(Entity entity)
 	{
-		
+		entity.getTexture().render(target, entity.getPosition());
 	}
 }

@@ -19,7 +19,19 @@ public class EntityPlayer extends Entity
 		
 		if (InputState.keyDown(Key.RIGHT))
 		{
-			move(64 * elapsed, 0);
+			move(128 * elapsed, 0);
+		}
+		if (InputState.keyDown(Key.LEFT))
+		{
+			move(-128 * elapsed, 0);
+		}
+		if (InputState.keyDown(Key.UP))
+		{
+			move(0, -128 * elapsed);
+		}
+		if (InputState.keyDown(Key.DOWN))
+		{
+			move(0, 128 * elapsed);
 		}
 	}
 }
