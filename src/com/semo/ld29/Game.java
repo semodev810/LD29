@@ -3,8 +3,12 @@ package com.semo.ld29;
 import org.jsfml.graphics.Color;
 import org.jsfml.graphics.RenderWindow;
 import org.jsfml.system.Clock;
+import org.jsfml.window.Keyboard.Key;
+import org.jsfml.window.Mouse.Button;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
+
+import com.semo.ld29.input.InputState;
 
 public class Game 
 {
@@ -28,9 +32,12 @@ public class Game
 			window.clear(Color.BLACK);
 			
 			float deltaTime = (clock.restart()).asSeconds();
+			InputState.swapStates();
 			
 			for (Event event : window.pollEvents())
 			{
+				InputState.handleEvent(event);
+				
 				if (event.type == Event.Type.CLOSED)
 					window.close();
 			}
