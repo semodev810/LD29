@@ -22,8 +22,8 @@ public class Resources
 		
 		MISSING_SPRITE = new AnimatedSprite("missing.png", 1, 1, 32, 32);
 		
-		PLAYER_SPRITE = new AnimatedSprite("player.png", 8, 8, 20, 40);
-		PLAYER_SPRITE.addAnimation(new Animation(0, 6, 0.1f, "Jump"));
+		PLAYER_SPRITE = new AnimatedSprite("player.png", 8, 8, 20, 50);
+		PLAYER_SPRITE.addAnimation(new Animation(0, 7, 0.2f, "Up"));
 		
 		BULLET_SPRITE = new AnimatedSprite("bullet.png", 8, 1, 9, 9);
 		BULLET_SPRITE.addAnimation(new Animation(0, 0, 0, "Up"));

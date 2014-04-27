@@ -12,15 +12,14 @@ import com.semo.ld29.world.tile.TileWall;
 // Rendering is done with the EntityRenderer class and called by the containing world
 public abstract class Entity 
 {
-	protected Vector2f position;
-	protected Vector2f lastPosition;
 	protected World world;
 	protected FloatRect hitbox;
 	
-	protected int lastDirection;
-	
 	private Vector2i tilePos;
 	private Vector2i lastTilePos;
+	protected Vector2f position;
+	protected Vector2f lastPosition;
+	protected Vector2f velocity;
 	
 	protected AnimatedSprite sprite;
 	
@@ -49,30 +48,52 @@ public abstract class Entity
 		return new Vector2f(position.x, position.y);
 	}
 	
-	public Entity setPosition(float x, float y)
+//	public Entity setPosition(float x, float y)
+//	{
+//		return setPosition(new Vector2f(x, y));
+//	}
+//	
+//	public Entity setPosition(Vector2f newPos)
+//	{
+//		if (this.canMoveTo(newPos))
+//		{
+//			this.position = newPos;
+//			updateHitbox();
+//		}
+//		// TODO: check is a position changed event is necessary
+//		return this;
+//	}
+//	
+//	public Entity move(float x, float y)
+//	{
+//		return move(new Vector2f(x, y));
+//	}
+//	
+//	public Entity move(Vector2f amt)
+//	{
+//		return setPosition(position.x + amt.x, position.y + amt.y);
+//	}
+	
+	public Vector2f getVelocity()
 	{
-		return setPosition(new Vector2f(x, y));
+		return velocity;
 	}
 	
-	public Entity setPosition(Vector2f newPos)
+	public float getAbsoluteVelocity()
 	{
-		if (this.canMoveTo(newPos))
-		{
-			this.position = newPos;
-			updateHitbox();
-		}
-		// TODO: check is a position changed event is necessary
+		return (float) Math.sqrt(Math.pow(velocity.x, 2) + Math.pow(velocity.y, 2));
+	}
+	
+	public Entity setVelocity(Vector2f vel)
+	{
+		velocity = vel;
 		return this;
 	}
 	
-	public Entity move(float x, float y)
+	public Entity addToVelocity(Vector2f vel)
 	{
-		return move(new Vector2f(x, y));
-	}
-	
-	public Entity move(Vector2f amt)
-	{
-		return setPosition(position.x + amt.x, position.y + amt.y);
+		velocity = Vector2f.add(velocity, vel);
+		return this;
 	}
 	
 	public boolean canMoveTo(Vector2f loc)
@@ -102,45 +123,28 @@ public abstract class Entity
 		return world.getTile(tilex, tiley).canEntityEnterTile(this, tilex, tiley, world.getMetadata(tilex, tiley));
 	}
 	
-	public void updateHitbox()
+	public Vector2f distanceTo(Vector2f point)
 	{
-		this.hitbox = new FloatRect(position.x - (hitbox.width / 2), position.y - hitbox.height, hitbox.width, hitbox.height);
+		float dx = point.x - position.x;
+		float dy = point.y - position.y;
+		
+		float deltax = 0, deltay = 0;
+		if (dx < 0)
+			deltax = point.x - hitbox.left;
+		else if (dx > 0)
+			deltax = point.x - (hitbox.left + hitbox.width);
+		
+		if (dy < 0)
+			deltay = point.y - (position.y - (hitbox.height / 4));
+		else if (dy > 0)
+			deltay = point.y - (position.y + (hitbox.height / 4));
+		
+		return new Vector2f(deltax, deltay);
 	}
-	
-	public final World getWorld()
-	{
-		return world;
-	}
-	
-	public void onInitialize() { }
-	public void onSpawn() { }
 	
 	// DO NOT FORGET TO CALL super.update IN CHILD CLASSES, or sadness
 	public void update(float elapsed)
-	{
-		float dx = position.x - lastPosition.x;
-		float dy = position.y - lastPosition.y;
-		
-		int lr = (dx < 0) ? 0 : (dx == 0) ? 1 : 2;
-		int ud = (dy < 0) ? 0 : (dy == 0) ? 1 : 2;
-		
-		if (ud == 0 && lr == 0)
-			lastDirection = 7;
-		else if (ud == 0 && lr == 1)
-			lastDirection = 0;
-		else if (ud == 0 && lr == 2)
-			lastDirection = 1;
-		else if (ud == 1 && lr == 0)
-			lastDirection = 6;
-		else if (ud == 1 && lr == 2)
-			lastDirection = 2;
-		else if (ud == 2 && lr == 0)
-			lastDirection = 5;
-		else if (ud == 2 && lr == 1)
-			lastDirection = 4;
-		else if (ud == 2 && lr == 2)
-			lastDirection = 3;
-		
+	{	
 		this.tilePos = new Vector2i((int)this.position.x, (int)this.position.y);
 		
 		Tile curr = world.getTile(tilePos.x, tilePos.y);
@@ -157,8 +161,11 @@ public abstract class Entity
 		sprite.update(elapsed);
 	}
 	
-	public void onCollideWithWall() { }
+	// ==================================================
 	
+	public void onInitialize() { }
+	public void onSpawn() { }
+	public void onCollideWithWall() { }
 	public void onCollideWithEntity(Entity other) { }
 	
 	// ==================================================
@@ -182,6 +189,16 @@ public abstract class Entity
 	public final FloatRect getHitbox()
 	{
 		return hitbox;
+	}
+	
+	public void updateHitbox()
+	{
+		this.hitbox = new FloatRect(position.x - (hitbox.width / 2), position.y - hitbox.height, hitbox.width, hitbox.height);
+	}
+	
+	public final World getWorld()
+	{
+		return world;
 	}
 	
 	// =================================================
