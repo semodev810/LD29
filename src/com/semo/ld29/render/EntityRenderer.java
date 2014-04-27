@@ -34,6 +34,6 @@ public class EntityRenderer
 	public static void renderEntity(Entity entity)
 	{
 		Vector2f pos = entity.getPosition();
-		entity.getTexture().render(target, new Vector2f(pos.x * 64, pos.y * 44), new Vector2f(2, 2));
+		entity.getTexture().render(target, Vector2f.add(new Vector2f(pos.x * 64, pos.y * 44), entity.getRenderOffset()), new Vector2f(2, 2));
 	}
 }

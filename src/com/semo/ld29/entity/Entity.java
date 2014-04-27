@@ -42,6 +42,11 @@ public abstract class Entity
 		return new Vector2f(hitbox.width, hitbox.height);
 	}
 	
+	public Vector2i getTilePosition()
+	{
+		return new Vector2i(tilePos.x, tilePos.y);
+	}
+	
 	public Vector2f getPosition()
 	{
 		return new Vector2f(position.x, position.y);
@@ -81,9 +86,9 @@ public abstract class Entity
 		int tilex = 0, tiley = 0;
 		
 		if (dx < 0)
-			tilex = (int)hitbox.left;
+			tilex = (int)(hitbox.left - 0.05f);
 		else if (dx > 0)
-			tilex = (int)(hitbox.left + hitbox.width);
+			tilex = (int)(hitbox.left + hitbox.width + 0.05f);
 		else
 			tilex = (int)position.x;
 		
@@ -144,7 +149,12 @@ public abstract class Entity
 		return sprite;
 	}
 	
-	public final FloatRect getHitbox()
+	public Vector2f getRenderOffset()
+	{
+		return new Vector2f(0, 0);
+	}
+	
+	public FloatRect getHitbox()
 	{
 		return hitbox;
 	}

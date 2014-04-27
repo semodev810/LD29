@@ -100,7 +100,7 @@ public class EntityPlayer extends EntityMonster
 			
 			if (lastShot > shotSpeed && InputState.keyDown(Key.SPACE))
 			{
-				Entity.createEntityInWorld(new EntityBullet(Vector2f.add(position, new Vector2f(0, -1.25f)), direction, Resources.BULLET_SPRITE.copy()), world);
+				Entity.createEntityInWorld(new EntityBullet(position, direction, Resources.BULLET_SPRITE.copy()), world);
 				lastShot = 0;
 			}
 		}

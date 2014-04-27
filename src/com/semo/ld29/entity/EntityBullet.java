@@ -1,5 +1,6 @@
 package com.semo.ld29.entity;
 
+import org.jsfml.graphics.FloatRect;
 import org.jsfml.system.Vector2f;
 
 import com.semo.ld29.render.AnimatedSprite;
@@ -98,6 +99,18 @@ public class EntityBullet extends Entity
 		}
 		
 		super.update(elapsed);
+	}
+	
+	@Override
+	public Vector2f getRenderOffset()
+	{
+		return new Vector2f(0, -64);
+	}
+	
+	@Override
+	public FloatRect getHitbox()
+	{
+		return new FloatRect(hitbox.left, hitbox.top - 1.25f, hitbox.width, hitbox.height);
 	}
 	
 	@Override

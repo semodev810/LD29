@@ -35,9 +35,15 @@ public class EntityMonster extends Entity
 			health = maxHealth;
 	}
 	
-	public void kill()
+	public final void kill()
 	{
 		this.world.removeEntity(this);
+		onDeath();
+	}
+	
+	public void onDeath()
+	{
+		
 	}
 	
 	@Override

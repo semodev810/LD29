@@ -58,31 +58,34 @@ public class Tile
 		return this;
 	}
 	
-	public int getIndex(byte meta)
+	public int getIndex(byte meta, int pass)
 	{
 		return index;
 	}
 	
-	public Vector2i getTextureSize(byte meta)
+	public Vector2i getTextureSize(byte meta, int pass)
 	{
 		return new Vector2i(32, 32);
 	}
 	
-	public Vector2f getOffset(byte meta)
+	public Vector2i getTextureOffset(byte meta, int pass)
+	{
+		return new Vector2i(0, 0);
+	}
+	
+	public boolean shouldRenderInPassAtLocation(int x, int y, int pass)
+	{
+		return rendersInPass(pass);
+	}
+	
+	public Vector2f getOffset(byte meta, int pass)
 	{
 		return new Vector2f(0, 0);
 	}
 	
-	/**
-	 * 0 - ground tiles and whatnot
-	 * 1 - walls and upper tiles
-	 * 2 - anything transparent
-	 * 
-	 * @return The render pass
-	 */
-	public int getRenderPass()
+	public boolean rendersInPass(int pass)
 	{
-		return 0;
+		return pass == 0;
 	}
 	
 	// ==========================================================================

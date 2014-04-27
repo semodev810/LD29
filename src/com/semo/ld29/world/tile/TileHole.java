@@ -1,6 +1,7 @@
 package com.semo.ld29.world.tile;
 
 import com.semo.ld29.entity.Entity;
+import com.semo.ld29.entity.EntityMonster;
 
 public class TileHole extends Tile
 {
@@ -12,6 +13,7 @@ public class TileHole extends Tile
 	@Override
 	public void onEntityEnter(Entity entity, int x, int y, byte meta)
 	{
-		entity.setPosition(1, 1);
+		if (entity instanceof EntityMonster)
+			((EntityMonster) entity).kill();
 	}
 }

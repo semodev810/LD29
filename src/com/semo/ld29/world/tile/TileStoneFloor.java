@@ -16,8 +16,8 @@ public class TileStoneFloor extends Tile
 	}
 	
 	@Override
-	public int getIndex(byte meta)
+	public int getIndex(byte meta, int pass)
 	{
-		return super.getIndex(meta) + meta;
+		return super.getIndex(meta, pass) + meta;
 	}
 }

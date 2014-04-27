@@ -51,6 +51,8 @@ public class World
 					setTile(x, y, 1);
 			}
 		}
+		
+		setTile(4, 4, 0);
 
 		entityList = new ArrayList<Entity>();
 		toRemoveList = new ArrayList<Entity>();
@@ -90,6 +92,8 @@ public class World
 		WorldRenderer.renderWorld(this, 0);
 		
 		EntityRenderer.renderAllEntities(entityList);
+		
+		WorldRenderer.renderWorld(this, 1);
 	}
 	
 	// ==============================================
