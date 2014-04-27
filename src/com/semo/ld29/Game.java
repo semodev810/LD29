@@ -16,6 +16,7 @@ import org.jsfml.window.event.SizeEvent;
 
 import com.semo.ld29.entity.Entity;
 import com.semo.ld29.entity.EntityPlayer;
+import com.semo.ld29.entity.EntitySpider;
 import com.semo.ld29.input.InputState;
 import com.semo.ld29.render.EntityRenderer;
 import com.semo.ld29.render.WorldRenderer;
@@ -94,6 +95,7 @@ public class Game
 		thePlayer = (EntityPlayer) new EntityPlayer(new Vector2f(1, 1)).setTexture(Resources.PLAYER_SPRITE, false);
 		thePlayer.getTexture().activateAnimation("Up");
 		Entity.createEntityInWorld(thePlayer, activeWorld);
+		Entity.createEntityInWorld(new EntitySpider(new Vector2f(9, 2)), activeWorld);
 		
 		int frames = 0;
 		while (window.isOpen())

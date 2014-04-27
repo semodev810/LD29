@@ -45,7 +45,6 @@ public class EntityPlayer extends EntityMonster
 			//sprite.activateAnimation("Jump");
 		}
 		
-		if (lastShot > shotSpeed && InputState.keyDown(Key.SPACE))
 		{
 			Vector2i mous = InputState.getMousePosition();
 			Vector2i scr = Vector2i.div(Game.getInstance().getWindow().getSize(), 2);
@@ -56,28 +55,54 @@ public class EntityPlayer extends EntityMonster
 			if (angle < 0)
 				angle += 2 * Math.PI;
 			int direction = (int)(angle / (Math.PI / 4.0));
+			int frame = sprite.getActiveAnimation().getCurrentFrame() % 8;
 			switch (direction)
 			{
 			case 0:
 				direction = 2;
+				sprite.activateAnimation("Right");
+				sprite.getActiveAnimation().setCurrentFrame(sprite.getActiveAnimation().startFrame + frame);
 				break;
 			case 2:
 				direction = 0;
+				sprite.activateAnimation("Up");
+				sprite.getActiveAnimation().setCurrentFrame(sprite.getActiveAnimation().startFrame + frame);
 				break;
 			case 3:
 				direction = 7;
+				sprite.activateAnimation("UpLeft");
+				sprite.getActiveAnimation().setCurrentFrame(sprite.getActiveAnimation().startFrame + frame);
 				break;
 			case 4:
 				direction = 6;
+				sprite.activateAnimation("Left");
+				sprite.getActiveAnimation().setCurrentFrame(sprite.getActiveAnimation().startFrame + frame);
 				break;
 			case 6:
 				direction = 4;
+				sprite.activateAnimation("Down");
+				sprite.getActiveAnimation().setCurrentFrame(sprite.getActiveAnimation().startFrame + frame);
 				break;
 			case 7:
 				direction = 3;
+				sprite.activateAnimation("DownRight");
+				sprite.getActiveAnimation().setCurrentFrame(sprite.getActiveAnimation().startFrame + frame);
+				break;
+			case 1:
+				sprite.activateAnimation("UpRight");
+				sprite.getActiveAnimation().setCurrentFrame(sprite.getActiveAnimation().startFrame + frame);
+				break;
+			case 5:
+				sprite.activateAnimation("DownLeft");
+				sprite.getActiveAnimation().setCurrentFrame(sprite.getActiveAnimation().startFrame + frame);
+				break;
 			}
-			Entity.createEntityInWorld(new EntityBullet(position, direction, Resources.BULLET_SPRITE.copy()), world);
-			lastShot = 0;
+			
+			if (lastShot > shotSpeed && InputState.keyDown(Key.SPACE))
+			{
+				Entity.createEntityInWorld(new EntityBullet(Vector2f.add(position, new Vector2f(0, -1.25f)), direction, Resources.BULLET_SPRITE.copy()), world);
+				lastShot = 0;
+			}
 		}
 		
 		move(mx, 0);

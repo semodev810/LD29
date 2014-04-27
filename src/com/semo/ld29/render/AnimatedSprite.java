@@ -155,9 +155,18 @@ public class AnimatedSprite
 			return false;
 		}
 		
-		activeAnimation = animations.get(name);
+		if (activeAnimation == null)
+			activeAnimation = animations.get(name);
+		
+		if (activeAnimation != null && activeAnimation.name != name)
+			activeAnimation = animations.get(name);
 			
 		return true;
+	}
+	
+	public Animation getActiveAnimation()
+	{
+		return activeAnimation;
 	}
 	
 	// ================================================================

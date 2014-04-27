@@ -44,6 +44,9 @@ public class EntityMonster extends Entity
 	public void onCollideWithEntity(Entity other)
 	{
 		if (other instanceof EntityBullet && !(this instanceof EntityPlayer))
+		{
 			this.damage(1);
+			System.out.println("IM HIT!");
+		}
 	}
 }

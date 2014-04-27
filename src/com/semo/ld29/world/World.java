@@ -70,6 +70,7 @@ public class World
 				Entity e2 = entityList.get(j);
 				if (e1.getHitbox().intersection(e2.getHitbox()) != null)
 				{
+					System.out.println("e1: " + e1 + "    e2: " + e2);
 					e1.onCollideWithEntity(e2);
 					e2.onCollideWithEntity(e1);
 				}

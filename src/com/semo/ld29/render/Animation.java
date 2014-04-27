@@ -189,6 +189,12 @@ public class Animation
 		return currentFrame;
 	}
 	
+	public void setCurrentFrame(int frame)
+	{
+		frame = (frame < startFrame) ? startFrame : (frame > endFrame) ? endFrame : frame;
+		currentFrame = frame;
+	}
+	
 	public float getSpeed()
 	{
 		return speed;
