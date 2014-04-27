@@ -9,19 +9,19 @@ import com.semo.ld29.world.tile.Tile;
 
 public class World 
 {
-	private static final int[][] TILEDATA = 
-		{
-		{ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 },
-		{ 1, 1, 2, 1, 1, 2, 1, 2, 1, 2 },
-		{ 1, 1, 2, 1, 1, 2, 1, 2, 1, 2 },
-		{ 1, 1, 2, 1, 1, 2, 1, 2, 1, 2 },
-		{ 1, 1, 2, 2, 1, 2, 1, 2, 1, 2 },
-		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 2 },
-		{ 1, 1, 0, 0, 1, 1, 1, 1, 1, 2 },
-		{ 1, 1, 0, 0, 1, 1, 1, 1, 1, 2 },
-		{ 1, 1, 1, 0, 1, 1, 1, 1, 1, 2 },
-		{ 1, 1, 1, 1, 1, 1, 2, 2, 2, 2 }
-		};
+//	private static final int[][] TILEDATA = 
+//		{
+//		{ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 },
+//		{ 1, 1, 2, 1, 1, 2, 1, 2, 1, 2 },
+//		{ 1, 1, 2, 1, 1, 2, 1, 2, 1, 2 },
+//		{ 1, 1, 2, 1, 1, 2, 1, 2, 1, 2 },
+//		{ 1, 1, 2, 2, 1, 2, 1, 2, 1, 2 },
+//		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 2 },
+//		{ 1, 1, 0, 0, 1, 1, 1, 1, 1, 2 },
+//		{ 1, 1, 0, 0, 1, 1, 1, 1, 1, 2 },
+//		{ 1, 1, 1, 0, 1, 1, 1, 1, 1, 2 },
+//		{ 1, 1, 1, 1, 1, 1, 2, 2, 2, 2 }
+//		};
 	
 	
 	private int[][] tileData;
@@ -31,6 +31,7 @@ public class World
 	public final int height;
 	
 	private ArrayList<Entity> entityList;
+	private ArrayList<Entity> toRemoveList;
 	
 	public World(int width, int height)
 	{
@@ -41,16 +42,46 @@ public class World
 		this.metaData = new byte[width][height];
 		
 		for (int x = 0; x < width; ++x)
+		{
 			for (int y = 0; y < height; ++y)
-				setTile(x, y, TILEDATA[y][x]);
+			{
+				if (x == 0 || y == 0 || x == (width - 1) || y == (height - 1))
+					setTile(x, y, 2);
+				else
+					setTile(x, y, 1);
+			}
+		}
 
 		entityList = new ArrayList<Entity>();
+		toRemoveList = new ArrayList<Entity>();
 	}
 	
 	public void update(float elapsed)
 	{
-		for (Entity ent : entityList)
-			ent.update(elapsed);
+		for (int i = 0; i < entityList.size(); ++i)
+			entityList.get(i).update(elapsed);
+		
+		// Brute force approach to collision checking
+		for (int i = 0; i < entityList.size(); ++i)
+		{
+			for (int j = i + 1; j < entityList.size(); ++j)
+			{
+				Entity e1 = entityList.get(i);
+				Entity e2 = entityList.get(j);
+				if (e1.getHitbox().intersection(e2.getHitbox()) != null)
+				{
+					e1.onCollideWithEntity(e2);
+					e2.onCollideWithEntity(e1);
+				}
+			}
+		}
+		
+		if (!toRemoveList.isEmpty())
+			for (Entity ent : toRemoveList)
+				if (entityList.contains(ent))
+					entityList.remove(ent);
+		
+		toRemoveList.clear();
 	}
 	
 	public void render(float elapsed)
@@ -79,8 +110,7 @@ public class World
 	
 	public void removeEntity(Entity entity)
 	{
-		if (entityList.contains(entity))
-			entityList.remove(entityList.indexOf(entity));
+		toRemoveList.add(entity);
 	}
 	
 	// ==============================================

@@ -40,7 +40,8 @@ public class WorldRenderer
 		currentTile.setTextureRect(new IntRect(0, 0, 32, 32));
 		
 		View oldView = (View) target.getView();
-		View newView = new View(Game.getInstance().getPlayer().getPosition(), oldView.getSize());
+		Vector2f playerPos = Game.getInstance().getPlayer().getPosition();
+		View newView = new View(new Vector2f(playerPos.x * 64, playerPos.y * 44), oldView.getSize());
 		
 		target.setView(newView);
 		

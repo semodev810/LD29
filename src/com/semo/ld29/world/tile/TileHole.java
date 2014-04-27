@@ -12,6 +12,6 @@ public class TileHole extends Tile
 	@Override
 	public void onEntityEnter(Entity entity, int x, int y, byte meta)
 	{
-		entity.setPosition(100, 100);
+		entity.setPosition(1, 1);
 	}
 }

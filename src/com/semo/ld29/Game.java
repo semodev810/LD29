@@ -91,7 +91,7 @@ public class Game
 		dConsole.updateInformation("FPS", "FPS: 0");
 		
 		activeWorld = new World(10, 10);
-		thePlayer = (EntityPlayer) new EntityPlayer(new Vector2f(50, 50)).setTexture(Resources.PLAYER_SPRITE, true);
+		thePlayer = (EntityPlayer) new EntityPlayer(new Vector2f(1, 1)).setTexture(Resources.PLAYER_SPRITE, false);
 		Entity.createEntityInWorld(thePlayer, activeWorld);
 		
 		int frames = 0;

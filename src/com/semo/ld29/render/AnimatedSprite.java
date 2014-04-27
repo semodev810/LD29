@@ -92,15 +92,15 @@ public class AnimatedSprite
 	
 	public void update(float elapsed)
 	{
-		System.out.println(activeAnimation.name);
 		activeAnimation.update(elapsed);
 	}
 	
-	public void render(RenderTarget target, Vector2f position)
+	public void render(RenderTarget target, Vector2f position, Vector2f scale)
 	{
 		frame.setTextureRect(getSubset());
 		Vector2f oldPos = frame.getPosition();
 		frame.setPosition(position);
+		frame.setScale(scale);
 		target.draw(frame);
 		frame.setPosition(oldPos);
 	}
