@@ -19,7 +19,6 @@ public abstract class Entity
 	private Vector2i lastTilePos;
 	protected Vector2f position;
 	protected Vector2f lastPosition;
-	protected Vector2f velocity;
 	
 	protected AnimatedSprite sprite;
 	
@@ -48,52 +47,30 @@ public abstract class Entity
 		return new Vector2f(position.x, position.y);
 	}
 	
-//	public Entity setPosition(float x, float y)
-//	{
-//		return setPosition(new Vector2f(x, y));
-//	}
-//	
-//	public Entity setPosition(Vector2f newPos)
-//	{
-//		if (this.canMoveTo(newPos))
-//		{
-//			this.position = newPos;
-//			updateHitbox();
-//		}
-//		// TODO: check is a position changed event is necessary
-//		return this;
-//	}
-//	
-//	public Entity move(float x, float y)
-//	{
-//		return move(new Vector2f(x, y));
-//	}
-//	
-//	public Entity move(Vector2f amt)
-//	{
-//		return setPosition(position.x + amt.x, position.y + amt.y);
-//	}
-	
-	public Vector2f getVelocity()
+	public Entity setPosition(float x, float y)
 	{
-		return velocity;
+		return setPosition(new Vector2f(x, y));
 	}
 	
-	public float getAbsoluteVelocity()
+	public Entity setPosition(Vector2f newPos)
 	{
-		return (float) Math.sqrt(Math.pow(velocity.x, 2) + Math.pow(velocity.y, 2));
-	}
-	
-	public Entity setVelocity(Vector2f vel)
-	{
-		velocity = vel;
+		if (this.canMoveTo(newPos))
+		{
+			this.position = newPos;
+			updateHitbox();
+		}
+		// TODO: check is a position changed event is necessary
 		return this;
 	}
 	
-	public Entity addToVelocity(Vector2f vel)
+	public Entity move(float x, float y)
 	{
-		velocity = Vector2f.add(velocity, vel);
-		return this;
+		return move(new Vector2f(x, y));
+	}
+	
+	public Entity move(Vector2f amt)
+	{
+		return setPosition(position.x + amt.x, position.y + amt.y);
 	}
 	
 	public boolean canMoveTo(Vector2f loc)
@@ -121,25 +98,6 @@ public abstract class Entity
 			this.onCollideWithWall();
 		
 		return world.getTile(tilex, tiley).canEntityEnterTile(this, tilex, tiley, world.getMetadata(tilex, tiley));
-	}
-	
-	public Vector2f distanceTo(Vector2f point)
-	{
-		float dx = point.x - position.x;
-		float dy = point.y - position.y;
-		
-		float deltax = 0, deltay = 0;
-		if (dx < 0)
-			deltax = point.x - hitbox.left;
-		else if (dx > 0)
-			deltax = point.x - (hitbox.left + hitbox.width);
-		
-		if (dy < 0)
-			deltay = point.y - (position.y - (hitbox.height / 4));
-		else if (dy > 0)
-			deltay = point.y - (position.y + (hitbox.height / 4));
-		
-		return new Vector2f(deltax, deltay);
 	}
 	
 	// DO NOT FORGET TO CALL super.update IN CHILD CLASSES, or sadness
